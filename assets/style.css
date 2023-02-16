@@ -6,3 +6,9 @@ header {
     text-align: center;
 };
 
+
+
+.card {
+    background-color: maroon;
+    color: white;
+}
