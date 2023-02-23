@@ -11,4 +11,9 @@ header {
 .card {
     background-color: maroon;
     color: white;
-}
+};
+
+body {
+    color: purple;
+    background-color: lightblue;
+};

@@ -37,7 +37,7 @@ function getWeather(city) {
             name: response.city.name,
             coordinates: response.city.coord,
             description: response.list[0].weather[0].description,
-            temperature: response.list[0].main.temp,
+            temperature: Math.floor(response.list[0].main.temp - 273.15),
             windAngle: response.list[0].wind.deg,
             windSpeed: response.list[0].wind.speed,
             windGust: response.list[0].wind.gust,
@@ -50,5 +50,30 @@ function getWeather(city) {
 }
 
 function createWeatherDisplay(data) {
-    console.log(data.name);
-}
+    // clear previous content from the todayPanel
+    todayPanel.empty();
+
+    var weatherDiv = $("<div>");
+    var cityHeader = $("<h2>").text(moment().format("dddd") + "'s weather in " + data.name + ":");
+    weatherDiv.append(cityHeader);
+    var descriptionP = $("<h3>").text(data.description);
+    weatherDiv.append(descriptionP);
+
+    //list of details
+    var weatherList = $("<ul>")
+    weatherDiv.append(weatherList)
+
+    var tempP = $("<li>").text("Temperature: " + data.temperature + " °C");
+    weatherList.append(tempP);
+
+    var windP = $("<li>").text("Wind: " + data.windSpeed + " m/s, gusting to " + data.windGust + " m/s");
+    weatherList.append(windP);
+
+    var humidityP = $("<li>").text("Humidity: " + data.humidity + "%");
+    weatherList.append(humidityP);
+
+    todayPanel.append(weatherDiv);
+    
+
+};
+
