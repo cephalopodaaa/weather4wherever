@@ -43,9 +43,20 @@ function getWeather(city) {
             windGust: response.list[0].wind.gust,
             humidity: response.list[0].main.humidity
         };
+        // GET 5 DAY FORECAST FROM RESPONSE
+        var forecastList = response.list.filter(function (element, index) {
+            return index % 8 === 0;
+        }).map(function (element) {
+            return {
+                date: moment(element.dt_txt).format("dddd, MMM D"),
+                temperature: Math.floor(element.main.temp - 273.15),
+                description: element.weather[0].description,
+                icon: element.weather[0].icon
+            };
+        });
 
         // Call function to create HTML content with `output` data
-        createWeatherDisplay(output);
+        createWeatherDisplay(output, forecastList);
     });
 }
 
@@ -73,7 +84,7 @@ function createWeatherDisplay(data) {
     weatherList.append(humidityP);
 
     todayPanel.append(weatherDiv);
-    
+
 
 };
 
