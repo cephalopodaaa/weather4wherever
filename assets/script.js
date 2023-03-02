@@ -7,7 +7,47 @@ var searchButton = $("#search-button");
 var todayPanel = $("#today");
 var forecastPanel = $("#forecast");
 
+var background = $('body');
 var output;
+
+background.css({
+    "background": "linear-gradient(217deg,#e66465, #9198e5)",
+    "min-height": "100vh"
+});
+
+searchButton.css({
+    'background-color': 'lightblue',
+    'border': 'thick',
+    'color': 'white',
+    'padding': '15px 5px',
+    'text-align': 'center',
+    'text-decoration': 'none',
+    'display': 'inline-block',
+    'font-size': '16px',
+    'border-top-right-radius': '50px',
+    'border-bottom-right-radius': '50px',
+    'border-top-left-radius': '0px',
+    'border-bottom-left-radius': '0px',
+    'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.7)'
+});
+searchInput.css({
+    'background-color': 'salmon',
+    'border': 'none',
+    'color': 'white',
+    'padding': '12px 5px',
+    'text-align': 'center',
+    'text-decoration': 'none',
+    'display': 'inline-block',
+    'font-size': '16px',
+    'border-top-left-radius': '50px',
+    'border-bottom-left-radius': '50px',
+    'border-top-right-radius': '0px',
+    'border-bottom-right-radius': '0px',
+
+    'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.7)',
+});
+
+
 
 // CITY SEARCH BAR
 searchButton.on("click", function (event) {
@@ -75,6 +115,7 @@ function createWeatherDisplay(data) {
 
     todayPanel.append(weatherDiv);
 };
+
 
 
 
