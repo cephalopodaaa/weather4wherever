@@ -12,7 +12,8 @@ var output;
 
 background.css({
     "background": "linear-gradient(217deg,#e66465, #9198e5)",
-    "min-height": "100vh"
+    "min-height": "100vh",
+    "color": "white"
 });
 
 searchButton.css({
