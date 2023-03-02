@@ -11,6 +11,10 @@ header {
 .card {
     background-color: maroon;
     color: white;
+    margin: 1rem;
+    padding: 1rem;
+    min-height: 300px;
+    
 };
 
 body {
