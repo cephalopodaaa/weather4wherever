@@ -20,35 +20,36 @@ background.css({
     "color": "white"
 });
 searchButton.css({
-    'background-color': 'lightblue',
-    'border': 'thick',
-    'color': 'white',
-    'padding': '15px 5px',
-    'text-align': 'center',
-    'text-decoration': 'none',
-    'display': 'inline-block',
-    'font-size': '16px',
-    'border-top-right-radius': '50px',
-    'border-bottom-right-radius': '50px',
-    'border-top-left-radius': '0px',
-    'border-bottom-left-radius': '0px',
-    'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.7)'
+    "background-color": "lightblue",
+    "border": "thick",
+    "color": "white",
+    "padding": "15px 5px",
+    "text-align": "center",
+    "text-decoration": "none",
+    "display": "inline-block",
+    "font-size": "16px",
+    "border-top-right-radius": "50px",
+    "border-bottom-right-radius": "50px",
+    "border-top-left-radius": "0px",
+    "border-bottom-left-radius": "0px",
+    "box-shadow": "10px 10px 20px rgba(0, 0, 0, 0.7)",
+    "wrap": "nowrap"
 });
 searchInput.css({
-    'background-color': 'salmon',
-    'border': 'none',
-    'color': 'white',
-    'padding': '12px 5px',
-    'text-align': 'center',
-    'text-decoration': 'none',
-    'display': 'inline-block',
-    'font-size': '16px',
-    'border-top-left-radius': '50px',
-    'border-bottom-left-radius': '50px',
-    'border-top-right-radius': '0px',
-    'border-bottom-right-radius': '0px',
-
-    'box-shadow': '10px 10px 20px rgba(0, 0, 0, 0.7)',
+    "background-color": "salmon",
+    "border": "none",
+    "color": "white",
+    "padding": "12px 5px",
+    "text-align": "center",
+    "text-decoration": "none",
+    "display": "inline-block",
+    "font-size": "16px",
+    "border-top-left-radius": "50px",
+    "border-bottom-left-radius": "50px",
+    "border-top-right-radius": "0px",
+    "border-bottom-right-radius": "0px",
+    "box-shadow": "10px 10px 20px rgba(0, 0, 0, 0.7)"
+    
 });
 
 
@@ -125,9 +126,11 @@ function getWeather(city) {
 
 // DISPLAY
 function createWeatherDisplay(data, forecast) {
+   
+   
+    // MAKING TODAY PANEL
     // clear previous content from the todayPanel
     todayPanel.empty();
-
 
     var weatherDiv = $("<div>");
     var cityHeader = $("<h2>").text(moment().format("dddd") + "'s weather in " + data.name + ":");
@@ -150,11 +153,35 @@ function createWeatherDisplay(data, forecast) {
 
     var humidityP = $("<li>").text("Humidity: " + data.humidity + "%");
     weatherList.append(humidityP);
-
-    // some temporary code to test my forecast functionality
-    console.log(forecast)
-
     todayPanel.append(weatherDiv);
+
+
+
+    // MAKING 5 DAY FORECAST PANEL
+    //clear previous content from forecastPanel
+    forecastPanel.empty();
+
+    for (i = 1; i < 6; i++) {
+        var cardDiv = $("<div>");
+        var dayHeader = $("<h3>").text(forecast[`day${i}`].day);
+        cardDiv.append(dayHeader);
+
+        forecastPanel.append(cardDiv);
+
+        forecastPanel.css({
+            "display": "flex",
+            "justify-content": "space-around",
+        })
+        cardDiv.css({
+            "flex": "1 1 100px",
+            "min-height": "30vh",
+            "background-color": "violet",
+            "margin": "0.5rem",
+            "padding": "0.75rem"
+
+        });
+
+    }
 };
 
 
