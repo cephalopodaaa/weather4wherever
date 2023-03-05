@@ -9,13 +9,16 @@ var forecastPanel = $("#forecast");
 
 var background = $('body');
 var output;
+var fiveDayOutput = {};
+var apiKey;
 
+
+// STYLING
 background.css({
     "background": "linear-gradient(217deg,#e66465, #9198e5)",
     "min-height": "100vh",
     "color": "white"
 });
-
 searchButton.css({
     'background-color': 'lightblue',
     'border': 'thick',
@@ -50,16 +53,21 @@ searchInput.css({
 
 
 
+
+
 // CITY SEARCH BAR
 searchButton.on("click", function (event) {
     event.preventDefault();
     var city = searchInput.val();
     getWeather(city);
-    getFiveDayForecast(city);
 });
 
+
+
+
+// API CALLS
 function getWeather(city) {
-    // WEATHER API CALL
+    // TODAY WEATHER API CALL
     var apiKey = "64f996f6510a1f1f557ed8a96abace4a";
     var queryURL = `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${apiKey}`;
 
@@ -85,20 +93,49 @@ function getWeather(city) {
             windGust: response.list[0].wind.gust,
             humidity: response.list[0].main.humidity
         };
+        // making output array for forecast (fiveDayOutput)
+        for (var i = 1; i < 6; i++) {
+            entryName = `day${i}`;
+            var dayTimesEight;
+            if (i === 5) {
+                dayTimesEight = 39 // this is because the forecast only goes up to 39 entries so last forecast day needs to use 3 hours earlier
+            } else {
+                dayTimesEight = Math.floor(i*8);    //as forecast every 3 hours, must times by eight to get daily forecast
+            }
+            fiveDayOutput[entryName] = {
+                date: moment().add(i, 'day').format("D MMM YYYY"),
+                day: moment().add(i, 'day').format("dddd"),
+                temperature: Math.floor(response.list[dayTimesEight].main.temp - 273.15)
+            };
+        }
+
 
         // Call function to create HTML content with `output` data
-        createWeatherDisplay(output);
+        createWeatherDisplay(output, fiveDayOutput);
     });
 }
 
-function createWeatherDisplay(data) {
+
+
+
+
+
+
+
+
+// DISPLAY
+function createWeatherDisplay(data, forecast) {
     // clear previous content from the todayPanel
     todayPanel.empty();
+
 
     var weatherDiv = $("<div>");
     var cityHeader = $("<h2>").text(moment().format("dddd") + "'s weather in " + data.name + ":");
     weatherDiv.append(cityHeader);
-    var descriptionP = $("<h3>").text(data.description);
+    var descriptionP = $("<h3>").text(data.description).css({
+        "text-align":"center",
+        "color": "purple"
+});
     weatherDiv.append(descriptionP);
 
     //list of details
@@ -113,6 +150,9 @@ function createWeatherDisplay(data) {
 
     var humidityP = $("<li>").text("Humidity: " + data.humidity + "%");
     weatherList.append(humidityP);
+
+    // some temporary code to test my forecast functionality
+    console.log(forecast)
 
     todayPanel.append(weatherDiv);
 };
