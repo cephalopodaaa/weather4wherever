@@ -49,7 +49,7 @@ searchInput.css({
     "border-top-right-radius": "0px",
     "border-bottom-right-radius": "0px",
     "box-shadow": "10px 10px 20px rgba(0, 0, 0, 0.7)"
-    
+
 });
 
 
@@ -101,12 +101,14 @@ function getWeather(city) {
             if (i === 5) {
                 dayTimesEight = 39 // this is because the forecast only goes up to 39 entries so last forecast day needs to use 3 hours earlier
             } else {
-                dayTimesEight = Math.floor(i*8);    //as forecast every 3 hours, must times by eight to get daily forecast
+                dayTimesEight = Math.floor(i * 8);    //as forecast every 3 hours, must times by eight to get daily forecast
             }
             fiveDayOutput[entryName] = {
                 date: moment().add(i, 'day').format("D MMM YYYY"),
                 day: moment().add(i, 'day').format("dddd"),
-                temperature: Math.floor(response.list[dayTimesEight].main.temp - 273.15)
+                temperature: Math.floor(response.list[dayTimesEight].main.temp - 273.15),
+                windSpeed: response.list[dayTimesEight].wind.speed,
+                humidity: response.list[dayTimesEight].main.humidity
             };
         }
 
@@ -126,8 +128,6 @@ function getWeather(city) {
 
 // DISPLAY
 function createWeatherDisplay(data, forecast) {
-   
-   
     // MAKING TODAY PANEL
     // clear previous content from the todayPanel
     todayPanel.empty();
@@ -136,21 +136,24 @@ function createWeatherDisplay(data, forecast) {
     var cityHeader = $("<h2>").text(moment().format("dddd") + "'s weather in " + data.name + ":");
     weatherDiv.append(cityHeader);
     var descriptionP = $("<h3>").text(data.description).css({
-        "text-align":"center",
+        "text-align": "center",
         "color": "purple"
-});
+    });
     weatherDiv.append(descriptionP);
 
     //list of details
     var weatherList = $("<ul>")
     weatherDiv.append(weatherList)
 
+    //present temp
     var tempP = $("<li>").text("Temperature: " + data.temperature + " °C");
     weatherList.append(tempP);
 
+    //present wind
     var windP = $("<li>").text("Wind: " + data.windSpeed + " m/s, gusting to " + data.windGust + " m/s");
     weatherList.append(windP);
 
+    //present humidity
     var humidityP = $("<li>").text("Humidity: " + data.humidity + "%");
     weatherList.append(humidityP);
     todayPanel.append(weatherDiv);
@@ -160,28 +163,53 @@ function createWeatherDisplay(data, forecast) {
     // MAKING 5 DAY FORECAST PANEL
     //clear previous content from forecastPanel
     forecastPanel.empty();
+    forecastPanel.css({
+        "display": "flex",
+        "justify-content": "space-around",
+    });
 
+    // building forecast cards
     for (i = 1; i < 6; i++) {
+        console.log(forecast[`day${i}`].temperature);
+        console.log(forecast[`day${i}`].windSpeed);
+        console.log(forecast[`day${i}`].humidity);
         var cardDiv = $("<div>");
+
         var dayHeader = $("<h3>").text(forecast[`day${i}`].day);
         cardDiv.append(dayHeader);
+        
+
+        var forecastList = $("<ul>");
+        cardDiv.append(forecastList);
+
+        //forecast Temperature
+        var tempF = $("<li>").text("Temperature: " + forecast[`day${i}`].temperature + " °C");
+        forecastList.append(tempF);
+
+        //present wind
+        var windF = $("<li>").text("Wind: " + forecast[`day${i}`].windSpeed + " m/s");
+        forecastList.append(windF);
+
+        //present humidity
+        var humidityF = $("<li>").text("Humidity: " + forecast[`day${i}`].humidity + "%");
+        forecastList.append(humidityF);
+
+
+
 
         forecastPanel.append(cardDiv);
 
-        forecastPanel.css({
-            "display": "flex",
-            "justify-content": "space-around",
-        })
+        // styling cards
         cardDiv.css({
             "flex": "1 1 100px",
             "min-height": "30vh",
             "background-color": "violet",
             "margin": "0.5rem",
             "padding": "0.75rem"
-
         });
+        console.log(i);
 
-    }
+    };
 };
 
 
