@@ -92,7 +92,8 @@ function getWeather(city) {
             windAngle: response.list[0].wind.deg,
             windSpeed: response.list[0].wind.speed,
             windGust: response.list[0].wind.gust,
-            humidity: response.list[0].main.humidity
+            humidity: response.list[0].main.humidity,
+            symbol: "https://openweathermap.org/img/wn/" + response.list[0].weather[0].icon + ".png",
         };
         // making output array for forecast (fiveDayOutput)
         for (var i = 1; i < 6; i++) {
@@ -108,7 +109,8 @@ function getWeather(city) {
                 day: moment().add(i, 'day').format("dddd"),
                 temperature: Math.floor(response.list[dayTimesEight].main.temp - 273.15),
                 windSpeed: response.list[dayTimesEight].wind.speed,
-                humidity: response.list[dayTimesEight].main.humidity
+                humidity: response.list[dayTimesEight].main.humidity,
+                
             };
         }
 
@@ -135,8 +137,17 @@ function createWeatherDisplay(data, forecast) {
     var weatherDiv = $("<div>");
     var cityHeader = $("<h2>").text(moment().format("dddd") + "'s weather in " + data.name + ":");
     weatherDiv.append(cityHeader);
-    var descriptionP = $("<h3>").text(data.description).css({
+
+    var symbol = $("<img>").attr("src", data.symbol);
+    weatherDiv.append(symbol);
+    symbol.css({
+        "color": "white",
         "text-align": "center",
+        "font-size": "9rem",
+        "align-self": "center",
+    })
+
+    var descriptionP = $("<h3>").text(data.description).css({
         "color": "purple"
     });
     weatherDiv.append(descriptionP);
@@ -160,6 +171,7 @@ function createWeatherDisplay(data, forecast) {
 
 
 
+
     // MAKING 5 DAY FORECAST PANEL
     //clear previous content from forecastPanel
     forecastPanel.empty();
@@ -170,9 +182,6 @@ function createWeatherDisplay(data, forecast) {
 
     // building forecast cards
     for (i = 1; i < 6; i++) {
-        console.log(forecast[`day${i}`].temperature);
-        console.log(forecast[`day${i}`].windSpeed);
-        console.log(forecast[`day${i}`].humidity);
         var cardDiv = $("<div>");
 
         var dayHeader = $("<h3>").text(forecast[`day${i}`].day);
@@ -202,12 +211,21 @@ function createWeatherDisplay(data, forecast) {
         // styling cards
         cardDiv.css({
             "flex": "1 1 100px",
+            "justify-content": "space-around",
             "min-height": "30vh",
-            "background-color": "violet",
+            "background-color": "#eb786f",
+            "border-radius": "3rem",
+            "color": "black",
             "margin": "0.5rem",
-            "padding": "0.75rem"
+            "padding": "0.75rem",
+            "box-shadow": "10px 10px 20px rgba(0, 0, 0, 0.7)"
         });
-        console.log(i);
+        dayHeader.css({
+            "text-align": "center",
+        })
+        forecastList.css({
+            "list-style-type": "none",
+        })
 
     };
 };
